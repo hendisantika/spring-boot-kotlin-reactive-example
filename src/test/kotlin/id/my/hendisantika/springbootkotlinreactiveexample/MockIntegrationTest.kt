@@ -1,11 +1,17 @@
 package id.my.hendisantika.springbootkotlinreactiveexample
 
+import com.ninjasquad.springmockk.MockkBean
 import id.my.hendisantika.springbootkotlinreactiveexample.controller.Handler
 import id.my.hendisantika.springbootkotlinreactiveexample.controller.RouteConfig
+import id.my.hendisantika.springbootkotlinreactiveexample.data.News
+import id.my.hendisantika.springbootkotlinreactiveexample.repository.NewsRepository
+import io.mockk.coEvery
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.test.web.reactive.server.expectBody
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,4 +27,26 @@ import org.springframework.test.web.reactive.server.WebTestClient
 @Import(RouteConfig::class, Handler::class)
 class MockIntegrationTest(
     @Autowired val client: WebTestClient
-)
+) {
+    @MockkBean
+    private lateinit var repository: NewsRepository
+
+    @Test
+    fun `GET news by id test`() {
+        val news = News(123, "Test", "Some hot news", "test.com")
+
+        coEvery {
+            repository.findById(any())
+        } coAnswers {
+            news
+        }
+
+        client
+            .get()
+            .uri("/api/v1/news/123")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody<News>()
+            .isEqualTo(news)
+    }
+}
