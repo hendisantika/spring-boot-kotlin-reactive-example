@@ -71,4 +71,23 @@ class MockIntegrationTest(
             .expectBody<Array<NewsDTO>>()
             .isEqualTo(arrayOf(news.toDTO()))
     }
+
+    @Test
+    fun `POST news test`() {
+        val news = News(123, "Test", "Some hot news", "test.com")
+
+        coEvery {
+            repository.findById(any())
+        } coAnswers {
+            news
+        }
+
+        client
+            .get()
+            .uri("/api/v1/news/123")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody<NewsDTO>()
+            .isEqualTo(news.toDTO())
+    }
 }
