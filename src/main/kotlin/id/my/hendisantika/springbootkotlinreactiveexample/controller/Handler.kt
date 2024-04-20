@@ -6,6 +6,7 @@ import id.my.hendisantika.springbootkotlinreactiveexample.dto.NewsDTO
 import id.my.hendisantika.springbootkotlinreactiveexample.dto.toData
 import id.my.hendisantika.springbootkotlinreactiveexample.repository.NewsRepository
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.reactive.awaitSingle
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -15,10 +16,10 @@ import org.springframework.web.reactive.function.server.*
 @Component
 class Handler(
     private val repository: NewsRepository
-
+) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-            suspend fun getNewsList(req: ServerRequest): ServerResponse {
+    suspend fun getNewsList(req: ServerRequest): ServerResponse {
         val news = repository.findAll().map { it.toDTO() }
 
         return ServerResponse
@@ -27,7 +28,7 @@ class Handler(
             .bodyAndAwait(news)
     }
 
-            suspend fun getNews(req: ServerRequest): ServerResponse {
+    suspend fun getNews(req: ServerRequest): ServerResponse {
         val id = req.pathVariable(NEWS_ID).toLongOrNull() ?: return ServerResponse
             .badRequest()
             .bodyValue(ErrorDTO(msg = "Invalid news id in path"))
@@ -43,7 +44,7 @@ class Handler(
             .bodyValueAndAwait(news)
     }
 
-            suspend fun addNews(req: ServerRequest): ServerResponse {
+    suspend fun addNews(req: ServerRequest): ServerResponse {
         val news = try {
             req.awaitBody<NewsDTO>()
         } catch (e: Exception) {
@@ -69,4 +70,4 @@ class Handler(
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValueAndAwait(savedNews)
     }
-)
+}
