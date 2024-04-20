@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.context.annotation.Import
+import org.springframework.test.context.aot.DisabledInAotMode
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 
@@ -26,6 +27,7 @@ import org.springframework.test.web.reactive.server.expectBody
  * Time: 08:54
  * To change this template use File | Settings | File Templates.
  */
+@DisabledInAotMode
 @WebFluxTest
 @Import(RouteConfig::class, Handler::class)
 class MockIntegrationTest(
