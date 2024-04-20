@@ -2,9 +2,12 @@ package id.my.hendisantika.springbootkotlinreactiveexample.controller
 
 import id.my.hendisantika.springbootkotlinreactiveexample.data.toDTO
 import id.my.hendisantika.springbootkotlinreactiveexample.dto.ErrorDTO
+import id.my.hendisantika.springbootkotlinreactiveexample.dto.NewsDTO
+import id.my.hendisantika.springbootkotlinreactiveexample.dto.toData
 import id.my.hendisantika.springbootkotlinreactiveexample.repository.NewsRepository
 import kotlinx.coroutines.flow.map
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
@@ -38,5 +41,32 @@ class Handler(
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValueAndAwait(news)
+    }
+
+            suspend fun addNews(req: ServerRequest): ServerResponse {
+        val news = try {
+            req.awaitBody<NewsDTO>()
+        } catch (e: Exception) {
+            return ServerResponse
+                .badRequest()
+                .bodyValue(ErrorDTO(msg = "Invalid body"))
+                .awaitSingle()
+        }
+
+        val newsToSave = news.copy(id = 0).toData()
+
+        val savedNews = try {
+            repository.save(newsToSave).toDTO()
+        } catch (e: Exception) {
+            log.error("Error saving news", e)
+            return ServerResponse
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .bodyValueAndAwait(ErrorDTO("Error while saving news"))
+        }
+
+        return ServerResponse
+            .ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValueAndAwait(savedNews)
     }
 )
