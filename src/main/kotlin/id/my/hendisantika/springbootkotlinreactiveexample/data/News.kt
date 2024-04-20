@@ -1,5 +1,6 @@
 package id.my.hendisantika.springbootkotlinreactiveexample.data
 
+import id.my.hendisantika.springbootkotlinreactiveexample.dto.NewsDTO
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
