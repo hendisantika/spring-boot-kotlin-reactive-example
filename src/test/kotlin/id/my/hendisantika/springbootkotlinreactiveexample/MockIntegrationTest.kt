@@ -4,8 +4,11 @@ import com.ninjasquad.springmockk.MockkBean
 import id.my.hendisantika.springbootkotlinreactiveexample.controller.Handler
 import id.my.hendisantika.springbootkotlinreactiveexample.controller.RouteConfig
 import id.my.hendisantika.springbootkotlinreactiveexample.data.News
+import id.my.hendisantika.springbootkotlinreactiveexample.data.toDTO
+import id.my.hendisantika.springbootkotlinreactiveexample.dto.NewsDTO
 import id.my.hendisantika.springbootkotlinreactiveexample.repository.NewsRepository
 import io.mockk.coEvery
+import kotlinx.coroutines.flow.flowOf
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -48,5 +51,24 @@ class MockIntegrationTest(
             .expectStatus().isOk
             .expectBody<News>()
             .isEqualTo(news)
+    }
+
+    @Test
+    fun `GET all news test`() {
+        val news = News(123, "Test", "Some hot news", "test.com")
+
+        coEvery {
+            repository.findAll()
+        } coAnswers {
+            flowOf(news)
+        }
+
+        client
+            .get()
+            .uri("/api/v1/news")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody<Array<NewsDTO>>()
+            .isEqualTo(arrayOf(news.toDTO()))
     }
 }
