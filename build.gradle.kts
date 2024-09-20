@@ -4,7 +4,7 @@ val kotlin_version = "1.9.23" // also update plugin versions
 val kotlin_serialization_version = "1.4.0"
 
 plugins {
-    id("org.springframework.boot") version "3.2.7"
+    id("org.springframework.boot") version "3.2.8"
     id("io.spring.dependency-management") version "1.1.4"
     id("org.graalvm.buildtools.native") version "0.9.17"
     kotlin("jvm") version "1.9.23"
