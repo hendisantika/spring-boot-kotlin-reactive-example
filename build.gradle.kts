@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlin_version = "1.9.23" // also update plugin versions
-val kotlin_serialization_version = "1.4.0"
+val kotlin_serialization_version = "1.7.3"
 
 plugins {
     id("org.springframework.boot") version "3.3.3"
