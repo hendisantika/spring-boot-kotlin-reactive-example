@@ -6,7 +6,7 @@ val kotlin_serialization_version = "1.4.0"
 plugins {
     id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.4"
-    id("org.graalvm.buildtools.native") version "0.9.17"
+    id("org.graalvm.buildtools.native") version "0.10.3"
     kotlin("jvm") version "1.9.23"
     kotlin("plugin.spring") version "1.9.23"
     kotlin("plugin.serialization") version "1.9.23"
