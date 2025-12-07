@@ -49,7 +49,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 
     // Mocks
-    testImplementation("io.mockk:mockk:1.14.6")
+    testImplementation("io.mockk:mockk:1.14.7")
     testImplementation("com.ninja-squad:springmockk:5.0.1")
 }
 
