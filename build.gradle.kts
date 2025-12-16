@@ -9,7 +9,7 @@ plugins {
     id("org.graalvm.buildtools.native") version "0.11.3"
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.spring") version "2.2.21"
-    kotlin("plugin.serialization") version "2.2.21"
+    kotlin("plugin.serialization") version "2.3.0"
 }
 
 group = "id.my.hendisantika"
